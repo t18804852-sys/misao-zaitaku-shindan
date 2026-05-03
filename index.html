@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>あなたに向いている在宅ワーク診断</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bd:#5c3d2e;--bm:#8b5e3c;--bl:#c89f7a;--bp:#f0e0cc;
+      --pd:#c0687a;--pm:#e8a4b0;--pl:#f5d0d8;--pp:#fdf0f2;
+      --cr:#fdf8f3;--cd:#f5ede0;--td:#3d2314;--tm:#6b4226;--tl:#9e7a5a;
+      --wh:#fff;--sh:rgba(92,61,46,.15);
+      --ok:#5fa86a;--ng:#c0687a;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Noto Sans JP',sans-serif;background:var(--cr);color:var(--td);min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 20% 10%,rgba(232,164,176,.22) 0%,transparent 50%),radial-gradient(ellipse at 80% 90%,rgba(200,159,122,.18) 0%,transparent 50%);pointer-events:none;z-index:0}
+    .app{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:0 0 60px}
+
+    /* Header */
+    .hdr{background:linear-gradient(135deg,var(--bd) 0%,var(--bm) 60%,var(--pd) 100%);padding:40px 28px 36px;text-align:center;position:relative;overflow:hidden}
+    .hdr::before{content:'';position:absolute;top:-30px;right:-30px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.07)}
+    .hdr::after{content:'';position:absolute;bottom:-40px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.05)}
+    .badge{display:inline-block;background:rgba(255,255,255,.18);color:#fff;font-size:11px;font-weight:500;letter-spacing:2px;padding:5px 16px;border-radius:20px;border:1px solid rgba(255,255,255,.3);margin-bottom:14px}
+    .hdr h1{font-family:'Noto Serif JP',serif;font-size:22px;font-weight:700;color:#fff;line-height:1.5;margin-bottom:8px}
+    .hdr p{font-size:13px;color:rgba(255,255,255,.82);line-height:1.6}
+    .ci{font-size:32px;margin-bottom:12px;display:block}
+
+    /* Progress */
+    .pw{padding:20px 28px 0}
+    .pl-row{display:flex;justify-content:space-between;font-size:12px;color:var(--tl);margin-bottom:8px;font-weight:500}
+    .pt{height:6px;background:var(--bp);border-radius:99px;overflow:hidden}
+    .pf{height:100%;background:linear-gradient(90deg,var(--bl),var(--pd));border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+    .dots{display:flex;justify-content:center;gap:10px;padding:16px 0 0}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--bp);transition:all .3s}
+    .dot.active{background:var(--bm);transform:scale(1.3)}
+    .dot.done{background:var(--pm)}
+
+    /* Page title */
+    .ptw{padding:24px 28px 0}
+    .plabel{font-size:11px;color:var(--pd);font-weight:700;letter-spacing:2px;margin-bottom:6px}
+    .ptitle{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:700;color:var(--bd);line-height:1.5}
+    .pdesc{font-size:13px;color:var(--tl);margin-top:6px;line-height:1.6}
+
+    /* Questions */
+    .qs{padding:20px 28px 0;display:flex;flex-direction:column;gap:20px}
+    .qc{background:var(--wh);border-radius:16px;padding:20px;box-shadow:0 2px 16px var(--sh);border:1px solid rgba(200,159,122,.15)}
+    .qnum{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:linear-gradient(135deg,var(--bm),var(--pd));border-radius:50%;color:#fff;font-size:12px;font-weight:700;margin-bottom:10px}
+    .qt{font-size:14px;font-weight:700;color:var(--bd);line-height:1.6;margin-bottom:14px}
+    .qsub{font-size:12px;color:var(--tl);margin-bottom:12px;font-style:italic;line-height:1.5}
+
+    /* Options */
+    .opts{display:flex;flex-direction:column;gap:8px}
+    .opt{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;border:1.5px solid var(--bp);cursor:pointer;transition:all .2s;background:var(--cr);font-size:13px;color:var(--tm);line-height:1.5}
+    .opt:hover{border-color:var(--pm);background:var(--pp)}
+    .opt input{display:none}
+    .opt.sel{border-color:var(--pd);background:linear-gradient(135deg,var(--pp),#fff5f7);color:var(--pd);font-weight:500}
+    .oc{flex-shrink:0;width:18px;height:18px;border-radius:50%;border:2px solid var(--bp);margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .opt.sel .oc{border-color:var(--pd);background:var(--pd)}
+    .opt.sel .oc::after{content:'';width:6px;height:6px;border-radius:50%;background:#fff}
+    /* Multi-select (checkbox style) */
+    .opts.multi .oc{border-radius:4px}
+    .opts.multi .opt.sel .oc::after{content:'✓';width:auto;height:auto;background:transparent;color:#fff;font-size:11px;font-weight:900;line-height:1}
+
+    /* Nav */
+    .nav{padding:28px 28px 0;display:flex;gap:12px}
+    .btn{flex:1;padding:15px;border-radius:12px;font-size:15px;font-weight:700;font-family:'Noto Sans JP',sans-serif;cursor:pointer;border:none;transition:all .2s;letter-spacing:.5px}
+    .bbk{background:var(--cd);color:var(--tl);border:1.5px solid var(--bp)}
+    .bbk:hover{background:var(--bp)}
+    .bnx{background:linear-gradient(135deg,var(--bm),var(--pd));color:#fff;box-shadow:0 4px 16px rgba(192,104,122,.4)}
+    .bnx:hover{box-shadow:0 6px 22px rgba(192,104,122,.55);transform:translateY(-1px)}
+    .bnx:disabled{opacity:.45;cursor:not-allowed;transform:none;box-shadow:none}
+
+    /* Page wrap */
+    .pw2{display:none;animation:fsi .4s ease}
+    .pw2.active{display:block}
+    @keyframes fsi{from{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}
+    .divider{margin:24px 28px 0;height:1px;background:linear-gradient(90deg,transparent,var(--bp),transparent)}
+
+    /* Start */
+    .sp{padding:28px}
+    .sc{background:var(--wh);border-radius:20px;padding:28px;box-shadow:0 4px 24px var(--sh);border:1px solid rgba(200,159,122,.2)}
+    .sc h2{font-family:'Noto Serif JP',serif;font-size:17px;font-weight:700;color:var(--bd);margin-bottom:14px;line-height:1.5}
+    .sst{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+    .ss{display:flex;align-items:flex-start;gap:12px}
+    .sn{background:linear-gradient(135deg,var(--bm),var(--pd));color:#fff;font-size:12px;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+    .st{font-size:13px;color:var(--tm);line-height:1.6}
+    .st strong{color:var(--bd)}
+    .guar{background:var(--pp);border-radius:10px;padding:12px 14px;font-size:12px;color:var(--pd);font-weight:500;text-align:center;margin-bottom:14px;border:1px solid var(--pl)}
+    .lock-note{background:#fff8ed;border-radius:10px;padding:10px 14px;font-size:11px;color:var(--tm);text-align:center;margin-bottom:20px;border:1px dashed var(--bl);line-height:1.6}
+
+    /* Result */
+    .rh{background:linear-gradient(135deg,var(--bd),var(--pd));padding:40px 28px 32px;text-align:center;color:#fff}
+    .ri{font-size:48px;margin-bottom:12px;display:block}
+    .rh h2{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:700;margin-bottom:8px;line-height:1.4}
+    .rh p{font-size:13px;opacity:.85;line-height:1.6}
+    .rb{padding:24px 28px}
+    .rsl{font-size:11px;font-weight:700;letter-spacing:2px;color:var(--pd);margin:24px 0 12px;text-transform:uppercase}
+    .rsl:first-child{margin-top:0}
+
+    /* Profile chips */
+    .profile-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+    .pchip{background:var(--bp);color:var(--bm);font-size:12px;font-weight:500;padding:4px 12px;border-radius:99px}
+
+    /* Answer summary */
+    .answer-summary{background:var(--wh);border:1px solid var(--bp);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:0}
+    .answer-row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px dashed var(--bp);font-size:12px;line-height:1.6}
+    .answer-row:last-child{border-bottom:none}
+    .answer-q{flex-shrink:0;color:var(--tl);font-weight:500;width:90px}
+    .answer-a{flex:1;color:var(--td);font-weight:600;text-align:right}
+    .answer-a.multi{display:flex;flex-wrap:wrap;gap:4px;justify-content:flex-end}
+    .answer-a.multi .achip{background:var(--pp);color:var(--pd);font-size:11px;font-weight:600;padding:2px 8px;border-radius:99px}
+
+    /* MBTI box */
+    .mbti{background:linear-gradient(135deg,#fff8f0,#fff5f7);border:2px solid var(--bl);border-radius:16px;padding:22px;margin-bottom:8px}
+    .mbti-code{display:inline-block;background:var(--bd);color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px;letter-spacing:2px}
+    .mbti-name{font-family:'Noto Serif JP',serif;font-size:19px;font-weight:700;color:var(--bd);margin-bottom:8px}
+    .mbti-desc{font-size:13px;color:var(--tm);line-height:1.7;margin-bottom:14px}
+    .mbti-feat{display:flex;flex-direction:column;gap:6px}
+    .mbti-feat .row{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--tm);line-height:1.5}
+    .mbti-feat .row .lbl{flex-shrink:0;background:var(--pl);color:var(--pd);padding:2px 8px;border-radius:6px;font-weight:700;font-size:10px;margin-top:2px}
+
+    /* Skill ranking */
+    .skill-list{background:var(--wh);border:1px solid var(--bp);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:10px}
+    .skill-row{display:flex;align-items:center;gap:10px;font-size:12px}
+    .skill-rank{flex-shrink:0;width:22px;height:22px;border-radius:50%;background:var(--bp);color:var(--bm);font-weight:700;font-size:11px;display:flex;align-items:center;justify-content:center}
+    .skill-rank.top{background:linear-gradient(135deg,var(--bm),var(--pd));color:#fff}
+    .skill-name{flex:1;color:var(--td);font-weight:500}
+    .skill-bar{flex-shrink:0;width:90px;height:6px;background:var(--bp);border-radius:99px;overflow:hidden}
+    .skill-bar-f{height:100%;background:linear-gradient(90deg,var(--bl),var(--pd));border-radius:99px}
+
+    /* Best match */
+    .rmc{background:linear-gradient(135deg,#fff5f0,#fff0f4);border:2px solid var(--pm);border-radius:16px;padding:22px;margin-bottom:14px}
+    .rrk{display:inline-block;background:linear-gradient(135deg,var(--bm),var(--pd));color:#fff;font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:10px}
+    .rje{font-size:32px;margin-bottom:6px;display:block}
+    .rjn{font-family:'Noto Serif JP',serif;font-size:20px;font-weight:700;color:var(--bd);margin-bottom:8px}
+    .rjd{font-size:13px;color:var(--tm);line-height:1.7;margin-bottom:12px}
+    .rtg{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+    .tag{background:var(--pl);color:var(--pd);font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px}
+    .job-section{margin-top:14px;padding-top:14px;border-top:1px dashed var(--bl)}
+    .job-section h4{font-size:12px;font-weight:700;color:var(--bd);margin-bottom:8px;letter-spacing:1px}
+    .job-section .merit{color:var(--ok)}
+    .job-section .demerit{color:var(--ng)}
+    .job-li{display:flex;gap:8px;align-items:flex-start;font-size:12px;color:var(--tm);line-height:1.6;margin-bottom:6px}
+    .job-li .ico{flex-shrink:0;font-size:11px;font-weight:900;margin-top:2px}
+    .job-li.merit .ico{color:var(--ok)}
+    .job-li.demerit .ico{color:var(--ng)}
+    .route-box{background:#fff;border:1.5px dashed var(--bl);border-radius:10px;padding:12px;font-size:12px;color:var(--tm);line-height:1.7}
+    .route-box strong{color:var(--bd)}
+
+    /* Sub matches */
+    .rcs{background:var(--wh);border:1.5px solid var(--bp);border-radius:14px;padding:16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px}
+    .se{font-size:26px;flex-shrink:0}
+    .sk{font-size:10px;font-weight:700;color:var(--bl);letter-spacing:1px;margin-bottom:4px}
+    .sn2{font-size:14px;font-weight:700;color:var(--bd);margin-bottom:4px}
+    .sd{font-size:12px;color:var(--tl);line-height:1.6}
+
+    /* Job library (full list) */
+    .joblib{display:flex;flex-direction:column;gap:8px}
+    .joblib details{background:var(--wh);border:1px solid var(--bp);border-radius:12px;overflow:hidden}
+    .joblib summary{padding:14px 16px;cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--bd)}
+    .joblib summary::-webkit-details-marker{display:none}
+    .joblib summary::after{content:'+';margin-left:auto;color:var(--pd);font-size:18px;font-weight:700;transition:transform .2s}
+    .joblib details[open] summary::after{transform:rotate(45deg)}
+    .joblib .libe{font-size:20px}
+    .joblib .libtag{font-size:10px;font-weight:600;color:var(--pd);background:var(--pp);padding:2px 8px;border-radius:99px;margin-left:6px}
+    .joblib .libbody{padding:0 16px 16px;font-size:12px;color:var(--tm);line-height:1.7;border-top:1px solid var(--bp)}
+    .joblib .libbody p{margin-top:10px}
+    .joblib .libbody .lbl{font-weight:700;color:var(--bd);font-size:11px;letter-spacing:1px;margin-top:10px}
+
+    /* CTA */
+    .cta-box{background:linear-gradient(135deg,var(--bd),var(--pd));border-radius:18px;padding:24px;color:#fff;margin-top:24px;text-align:center}
+    .cta-box h3{font-family:'Noto Serif JP',serif;font-size:18px;font-weight:700;margin-bottom:10px;line-height:1.5}
+    .cta-box p{font-size:13px;opacity:.9;line-height:1.7;margin-bottom:14px}
+    .cta-box .ss{align-items:flex-start;gap:10px;margin-bottom:8px;text-align:left}
+    .cta-box .ss .sn{background:rgba(255,255,255,.25)}
+    .cta-box .ss .st{color:rgba(255,255,255,.92);font-size:12px}
+    .cta-btn{display:inline-block;background:#fff;color:var(--pd);padding:14px 28px;border-radius:12px;font-weight:700;text-decoration:none;font-size:14px;margin-top:14px;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+    .cta-secret{background:rgba(255,255,255,.1);border:1px dashed rgba(255,255,255,.4);border-radius:10px;padding:12px;font-size:11px;line-height:1.6;margin-top:14px;text-align:left}
+    .cta-secret strong{color:#fff5f0}
+
+    /* Lock notice */
+    .lock-noticeR{background:var(--cd);border-radius:10px;padding:12px 14px;font-size:11px;color:var(--tl);text-align:center;margin-top:18px;border:1px dashed var(--bp);line-height:1.6}
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Header (always visible) -->
+  <div class="hdr">
+    <span class="ci">☕</span>
+    <div class="badge">FREE DIAGNOSIS</div>
+    <h1>あなたに向いている<br>在宅ワーク診断</h1>
+    <p>たった5分で<br>あなたの強みと最適な働き方がわかります</p>
+  </div>
+
+  <!-- START -->
+  <div id="start" class="pw2 active">
+    <div class="sp">
+      <div class="sc">
+        <h2>🌸 あなただけの結果がわかります</h2>
+        <div class="sst">
+          <div class="ss"><div class="sn">1</div><div class="st">プロフィール・性格・スキルから<strong>あなたの仕事タイプ</strong>を判定</div></div>
+          <div class="ss"><div class="sn">2</div><div class="st">あなたの<strong>スキルランキング</strong>を可視化</div></div>
+          <div class="ss"><div class="sn">3</div><div class="st">月30万円も狙える<strong>在宅ワーク3選</strong>と注意点までセットで提示</div></div>
+        </div>
+        <div class="guar">✨ 13問・約5分で完了します</div>
+        <div class="lock-note">📌 結果が変わってブレないよう、診断は<strong>1人1回限り</strong>になっています。落ち着いて答えてくださいね</div>
+        <button class="btn bnx" onclick="showPage('page1')">診断スタート →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE 1: プロフィール -->
+  <div id="page1" class="pw2">
+    <div class="pw"><div class="pl-row"><span>STEP 1 / 4</span><span>あなたについて</span></div><div class="pt"><div class="pf" style="width:25%"></div></div></div>
+    <div class="dots"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="ptw"><div class="plabel">STEP 01</div><div class="ptitle">まず、あなたのことを<br>教えてください</div><div class="pdesc">基礎プロフィールです ☕</div></div>
+    <div class="qs">
+
+      <div class="qc">
+        <div class="qnum">1</div>
+        <div class="qt">あなたの年代は？</div>
+        <div class="opts" data-q="q_age">
+          <label class="opt"><input type="radio" name="q_age" value="20"><div class="oc"></div>20代</label>
+          <label class="opt"><input type="radio" name="q_age" value="30"><div class="oc"></div>30代</label>
+          <label class="opt"><input type="radio" name="q_age" value="40"><div class="oc"></div>40代</label>
+          <label class="opt"><input type="radio" name="q_age" value="50"><div class="oc"></div>50代</label>
+          <label class="opt"><input type="radio" name="q_age" value="60"><div class="oc"></div>60代以上</label>
+        </div>
+      </div>
+
+      <div class="qc">
+        <div class="qnum">2</div>
+        <div class="qt">あなたの性別は？</div>
+        <div class="opts" data-q="q_sex">
+          <label class="opt"><input type="radio" name="q_sex" value="f"><div class="oc"></div>女性</label>
+          <label class="opt"><input type="radio" name="q_sex" value="m"><div class="oc"></div>男性</label>
+          <label class="opt"><input type="radio" name="q_sex" value="o"><div class="oc"></div>その他 / 答えたくない</label>
+        </div>
+      </div>
+
+      <div class="qc">
+        <div class="qnum">3</div>
+        <div class="qt">今の生活スタイルに一番近いのは？</div>
+        <div class="opts" data-q="q_life">
+          <label class="opt"><input type="radio" name="q_life" value="full"><div class="oc"></div>会社員（フルタイム）</label>
+          <label class="opt"><input type="radio" name="q_life" value="part"><div class="oc"></div>パートタイム・アルバイト</label>
+          <label class="opt"><input type="radio" name="q_life" value="home"><div class="oc"></div>専業主婦・育児中</label>
+          <label class="opt"><input type="radio" name="q_life" value="free"><div class="oc"></div>フリーランス・自営業</label>
+          <label class="opt"><input type="radio" name="q_life" value="none"><div class="oc"></div>無職・転職中・休職中</label>
+        </div>
+      </div>
+
+      <div class="qc">
+        <div class="qnum">4</div>
+        <div class="qt">在宅ワークで叶えたい「一番の夢」に近いのは？</div>
+        <div class="opts" data-q="q_dream">
+          <label class="opt"><input type="radio" name="q_dream" value="travel"><div class="oc"></div>🌏 家族で旅行に行けるくらいの余裕がほしい</label>
+          <label class="opt"><input type="radio" name="q_dream" value="kids"><div class="oc"></div>👶 子供の教育費・習い事の心配をなくしたい</label>
+          <label class="opt"><input type="radio" name="q_dream" value="free"><div class="oc"></div>🏠 会社を辞めて、好きな時間に働きたい</label>
+          <label class="opt"><input type="radio" name="q_dream" value="skill"><div class="oc"></div>💪 自分のスキルと自信をつけたい</label>
+          <label class="opt"><input type="radio" name="q_dream" value="money"><div class="oc"></div>💰 毎月の生活費の不安を消したい</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="nav">
+      <button class="btn bbk" onclick="showPage('start')">← 戻る</button>
+      <button class="btn bnx" id="next1" onclick="goNext('page1','page2')" disabled>次へ →</button>
+    </div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- PAGE 2: 環境・AI・PCスキル -->
+  <div id="page2" class="pw2">
+    <div class="pw"><div class="pl-row"><span>STEP 2 / 4</span><span>環境とスキル</span></div><div class="pt"><div class="pf" style="width:50%"></div></div></div>
+    <div class="dots"><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+    <div class="ptw"><div class="plabel">STEP 02</div><div class="ptitle">使える時間と<br>今のスキル</div><div class="pdesc">直感で選んでOKです ☕</div></div>
+    <div class="qs">
+
+      <div class="qc">
+        <div class="qnum">5</div>
+        <div class="qt">1日に作業できる時間はどのくらいですか？</div>
+        <div class="opts" data-q="q_time">
+          <label class="opt"><input type="radio" name="q_time" value="a"><div class="oc"></div>スキマ時間のみ（1時間未満）</label>
+          <label class="opt"><input type="radio" name="q_time" value="b"><div class="oc"></div>毎日1〜2時間は確保できる</label>
+          <label class="opt"><input type="radio" name="q_time" value="c"><div class="oc"></div>2〜4時間は集中して作業できる</label>
+          <label class="opt"><input type="radio" name="q_time" value="d"><div class="oc"></div>4時間以上がっつり取り組める</label>
+          <label class="opt"><input type="radio" name="q_time" value="e"><div class="oc"></div>子どもの昼寝・就寝後などの不定期</label>
+        </div>
+      </div>
+
+      <div class="qc">
+        <div class="qnum">6</div>
+        <div class="qt">理想の働き方はどちらに近いですか？</div>
+        <div class="opts" data-q="q_work">
+          <label class="opt"><input type="radio" name="q_work" value="a"><div class="oc"></div>毎月決まった額が入る安定収入型</label>
+          <label class="opt"><input type="radio" name="q_work" value="b"><div class="oc"></div>頑張り次第で収入が増える成果報酬型</label>
+          <label class="opt"><input type="radio" name="q_work" value="c"><div class="oc"></div>まず副業で月3〜5万から試したい</label>
+          <label class="opt"><input type="radio" name="q_work" value="d"><div class="oc"></div>半年以内に会社を辞められるくらい稼ぎたい</label>
+          <label class="opt"><input type="radio" name="q_work" value="e"><div class="oc"></div>いずれは自分でチームを持ちたい</label>
+        </div>
+      </div>
+
+      <div class="qc">
+        <div class="qnum">7</div>
+        <div class="qt">今のパソコン・スマホのスキルはどのくらいですか？</div>
+        <div class="opts" data-q="q_pc">
+          <label class="opt"><input type="radio" name="q_pc" value="a"><div class="oc"></div>ほぼゼロ。スマホだけ使えれば十分</label>
+          <label class="opt"><input type="radio" name="q_pc" value="b"><div class="oc"></div>WordやExcelを少し使ったことがある</label>
+          <label class="opt"><input type="radio" name="q_pc" value="c"><div class="oc"></div>SNS・Googleドキュメントは普通に使える</label>
+          <label class="opt"><input type="radio" name="q_pc" value="d"><div class="oc"></div>Canvaや画像編集ツールを触ったことがある</label>
+          <label class="opt"><input type="radio" name="q_pc" value="e"><div class="oc"></div>動画編集・デザインがある程度できる</label>
+        </div>
+      </div>
+
+      <div class="qc">
+        <div class="qnum">8</div>
+        <div class="qt">AI（ChatGPT等）との関わりは？</div>
+        <div class="qsub">在宅ワークの稼ぎ方が今、AIで一気に変わっています</div>
+        <div class="opts" data-q="q_ai">
+          <label class="opt"><input type="radio" name="q_ai" value="pro"><div class="oc"></div>仕事や副業で日常的に使いこなしている</label>
+          <label class="opt"><input type="radio" name="q_ai" value="use"><div class="oc"></div>趣味や調べもので時々使っている</label>
+          <label class="opt"><input type="radio" name="q_ai" value="want"><div class="oc"></div>触ったことはないけど、これから学びたい</label>
+          <label class="opt"><input type="radio" name="q_ai" value="know"><div class="oc"></div>名前は知ってるけど、何ができるか分からない</label>
+          <label class="opt"><input type="radio" name="q_ai" value="no"><div class="oc"></div>使ってない・興味ない</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="nav">
+      <button class="btn bbk" onclick="showPage('page1')">← 戻る</button>
+      <button class="btn bnx" id="next2" onclick="goNext('page2','page3')" disabled>次へ →</button>
+    </div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- PAGE 3: 性格 (MBTI 2軸 + 補助2問) -->
+  <div id="page3" class="pw2">
+    <div class="pw"><div class="pl-row"><span>STEP 3 / 4</span><span>あなたの性格・適性</span></div><div class="pt"><div class="pf" style="width:75%"></div></div></div>
+    <div class="dots"><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div></div>
+    <div class="ptw"><div class="plabel">STEP 03</div><div class="ptitle">あなたの性格・<br>仕事タイプを診断</div><div class="pdesc">直感で答えてください。MBTI風に4タイプから判定します ☕</div></div>
+    <div class="qs">
+
+      <div class="qc">
+        <div class="qnum">9</div>
+        <div class="qt">仕事をするとき、自分に一番しっくりくるスタイルは？</div>
+        <div class="qsub">外向 / 内向 を判定します</div>
+        <div class="opts" data-q="q_ei">
+          <label class="opt"><input type="radio" name="q_ei" value="E"><div class="oc"></div>クライアントや人と連絡しながら進めるのが好き</label>
+          <label class="opt"><input type="radio" name="q_ei" value="E"><div class="oc"></div>チームでアイデアを出し合いながら動くのが好き</label>
+          <label class="opt"><input type="radio" name="q_ei" value="I"><div class="oc"></div>ひとりで黙々と集中するのが得意</label>
+          <label class="opt"><input type="radio" name="q_ei" value="I"><div class="oc"></div>自分のペースで、人と関わらず作業したい</label>
+        </div>
+      </div>
+
+      <div class="qc">
+        <div class="qnum">10</div>
+        <div class="qt">新しいことを始めるとき、あなたはどっち？</div>
+        <div class="qsub">計画 / 柔軟 を判定します</div>
+        <div class="opts" data-q="q_jp">
+          <label class="opt"><input type="radio" name="q_jp" value="J"><div class="oc"></div>しっかり下調べ・計画してから動くタイプ</label>
+          <label class="opt"><input type="radio" name="q_jp" value="J"><div class="oc"></div>うまくいった人の手順をなぞって着実に進めたい</label>
+          <label class="opt"><input type="radio" name="q_jp" value="P"><div class="oc"></div>まずやってみて、走りながら考えるタイプ</label>
+          <label class="opt"><input type="radio" name="q_jp" value="P"><div class="oc"></div>気分や直感で柔軟に動きたい</label>
+        </div>
+      </div>
+
+      <div class="qc">
+        <div class="qnum">11</div>
+        <div class="qt">友達や家族から「あなたって…」と言われることに近いのは？</div>
+        <div class="opts" data-q="q_char">
+          <label class="opt"><input type="radio" name="q_char" value="care"><div class="oc"></div>気配りができる・話を聞くのが上手</label>
+          <label class="opt"><input type="radio" name="q_char" value="sense"><div class="oc"></div>センスがいい・おしゃれ・可愛いものが好き</label>
+          <label class="opt"><input type="radio" name="q_char" value="write"><div class="oc"></div>文章がうまい・説明がわかりやすい</label>
+          <label class="opt"><input type="radio" name="q_char" value="steady"><div class="oc"></div>コツコツ続けられる・丁寧・几帳面</label>
+          <label class="opt"><input type="radio" name="q_char" value="video"><div class="oc"></div>動画や映像を見るのが好き</label>
+          <label class="opt"><input type="radio" name="q_char" value="trend"><div class="oc"></div>流行・トレンドに敏感</label>
+        </div>
+      </div>
+
+      <div class="qc">
+        <div class="qnum">12</div>
+        <div class="qt">趣味や好きなことで一番近いのは？</div>
+        <div class="opts" data-q="q_hobby">
+          <label class="opt"><input type="radio" name="q_hobby" value="life"><div class="oc"></div>カフェ巡り・料理・インテリアなど"丁寧な暮らし"系</label>
+          <label class="opt"><input type="radio" name="q_hobby" value="info"><div class="oc"></div>読書・勉強・情報収集が好き</label>
+          <label class="opt"><input type="radio" name="q_hobby" value="make"><div class="oc"></div>絵・写真・ハンドメイドなどモノ作り</label>
+          <label class="opt"><input type="radio" name="q_hobby" value="watch"><div class="oc"></div>動画を見る・映画・ドラマが好き</label>
+          <label class="opt"><input type="radio" name="q_hobby" value="talk"><div class="oc"></div>人と話す・相談に乗るのが好き</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="nav">
+      <button class="btn bbk" onclick="showPage('page2')">← 戻る</button>
+      <button class="btn bnx" id="next3" onclick="goNext('page3','page4')" disabled>次へ →</button>
+    </div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- PAGE 4: スキル棚卸し + しっくり選択 -->
+  <div id="page4" class="pw2">
+    <div class="pw"><div class="pl-row"><span>STEP 4 / 4</span><span>スキル棚卸し</span></div><div class="pt"><div class="pf" style="width:100%"></div></div></div>
+    <div class="dots"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div></div>
+    <div class="ptw"><div class="plabel">STEP 04 🎉 最後！</div><div class="ptitle">あなたの強みを<br>教えてください</div><div class="pdesc">これが結果の精度に直結します ☕</div></div>
+    <div class="qs">
+
+      <div class="qc">
+        <div class="qnum">13</div>
+        <div class="qt">あなたの「強み・できること」に当てはまるものを<strong>すべて</strong>選んでください</div>
+        <div class="qsub">⚠️ <strong>6個以上選ぶ</strong>と結果の精度が一気に上がります（複数選択OK）</div>
+        <div id="skill-counter" style="font-size:13px;font-weight:700;color:var(--pd);margin-bottom:10px;background:var(--pp);padding:8px 14px;border-radius:8px;text-align:center">現在 0 個選択中（6個以上推奨）</div>
+        <div class="opts multi" data-q="q_skills" data-multi="1">
+          <label class="opt"><input type="checkbox" name="q_skills" value="write"><div class="oc"></div>文章を書くのが得意</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="design"><div class="oc"></div>写真・デザインのセンスがある</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="listen"><div class="oc"></div>人の話を聞くのが上手</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="org"><div class="oc"></div>段取り・スケジュール管理が得意</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="sns"><div class="oc"></div>SNSをよく使う・好き</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="video"><div class="oc"></div>動画・映像コンテンツが好き</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="trend"><div class="oc"></div>流行・トレンドに敏感</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="steady"><div class="oc"></div>コツコツ続けるのが得意</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="ai"><div class="oc"></div>AI（ChatGPT等）を触れる</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="proof"><div class="oc"></div>誤字脱字・細かい間違いに気づきやすい</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="teach"><div class="oc"></div>説明したり教えるのが好き</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="data"><div class="oc"></div>数字・データの整理が苦じゃない</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="photo"><div class="oc"></div>写真を撮るのが好き・上手</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="craft"><div class="oc"></div>手作り・ハンドメイドが好き</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="lang"><div class="oc"></div>英語・外国語ができる</label>
+          <label class="opt"><input type="checkbox" name="q_skills" value="empathy"><div class="oc"></div>人の悩みに共感するのが得意</label>
+        </div>
+      </div>
+
+    </div>
+    <div class="nav">
+      <button class="btn bbk" onclick="showPage('page3')">← 戻る</button>
+      <button class="btn bnx" id="next4" onclick="showResult()" disabled>結果を見る ✨</button>
+    </div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result" class="pw2">
+    <div class="rh">
+      <span class="ri">🌸</span>
+      <h2 id="r-title">診断結果</h2>
+      <p id="r-sub">13問の回答を分析しました</p>
+    </div>
+    <div class="rb">
+
+      <!-- Profile chips -->
+      <div class="profile-chips" id="r-chips"></div>
+
+      <!-- 回答サマリー -->
+      <div class="rsl">📝 あなたの回答</div>
+      <div class="answer-summary" id="r-answers"></div>
+
+      <!-- MBTI 性格タイプ -->
+      <div class="rsl">🧠 あなたの仕事タイプ</div>
+      <div class="mbti">
+        <div class="mbti-code" id="m-code"></div>
+        <div class="mbti-name" id="m-name"></div>
+        <div class="mbti-desc" id="m-desc"></div>
+        <div class="mbti-feat" id="m-feat"></div>
+      </div>
+
+      <!-- スキルランキング -->
+      <div class="rsl">📊 あなたのスキルランキング</div>
+      <div class="skill-list" id="r-skills"></div>
+
+      <!-- ベストマッチ -->
+      <div class="rsl">🥇 あなたに最もおすすめ</div>
+      <div class="rmc">
+        <div class="rrk">BEST MATCH</div>
+        <div class="rje" id="r-emoji"></div>
+        <div class="rjn" id="r-name"></div>
+        <div class="rjd" id="r-desc"></div>
+        <div class="rtg" id="r-tags"></div>
+
+        <div class="job-section">
+          <h4>💡 仕事内容</h4>
+          <div id="r-what"></div>
+        </div>
+
+        <div class="job-section">
+          <h4 class="merit">○ メリット</h4>
+          <div id="r-merit"></div>
+        </div>
+
+        <div class="job-section">
+          <h4 class="demerit">△ 注意点・デメリット</h4>
+          <div id="r-demerit"></div>
+        </div>
+
+        <div class="job-section">
+          <h4>🎯 月30万円までのルート</h4>
+          <div class="route-box" id="r-route"></div>
+        </div>
+      </div>
+
+      <!-- あわせておすすめ -->
+      <div class="rsl">✨ あわせておすすめ</div>
+      <div id="r-subs"></div>
+
+      <!-- 月30万円稼げる副業ライブラリ -->
+      <div class="rsl">📚 月30万円も狙える在宅ワーク全リスト</div>
+      <div class="joblib" id="r-joblib"></div>
+
+      <!-- LINE誘導CTA -->
+      <div class="cta-box">
+        <h3>🎁 さらに本気の人だけに</h3>
+        <p>この診断結果を、みさを公式LINEに<strong>スクショで送ってください</strong>。<br>あなたの結果を見て、3つの追加プレゼントを返信します。</p>
+        <div class="sst" style="margin-bottom:0">
+          <div class="ss"><div class="sn">1</div><div class="st">✅ 失敗するフリーランスと成功するフリーランスの違い</div></div>
+          <div class="ss"><div class="sn">2</div><div class="st">✅ ヤバい案件・詐欺っぽい案件の見分け方</div></div>
+          <div class="ss"><div class="sn">3</div><div class="st">✅ あなたのタイプ専用の「初月3万円ロードマップ」</div></div>
+        </div>
+        <a class="cta-btn" id="cta-link" href="#">公式LINEで結果を送る →</a>
+        <div class="cta-secret">📌 <strong>本編動画では出せない中上級者向けコンテンツ</strong>です。診断結果のスクショを送ってくれた方限定で配布しています。</div>
+      </div>
+
+      <!-- ロック注意書き -->
+      <div class="lock-noticeR" id="r-locknote">📌 この結果はあなたのブラウザに保存されました。同じ端末からは何度開いても同じ結果が出ます。</div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ===== 設定 =====
+const STORAGE_KEY = 'misao_zaitaku_diagnosis_v4';
+const LINE_URL = '#'; // TODO: 公式LINE URLが決まったら差し替え
+const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxgJ7TKrDr0h57_U9K6wry3KLCA2TBsXUaxeUBhpUwSmxi108T-rEAzvXCjfrgESLUF/exec';
+
+// ===== 職種マスタ =====
+const JOBS = {
+  sns: {
+    emoji:'📱', name:'SNS運用代行',
+    short:'インスタなど企業SNSの投稿・企画を代行',
+    desc:'お店や企業のInstagramを代わりに運用するお仕事。継続契約が多く、毎月安定して収入が積み上がる、在宅ワーク王道の仕事です。',
+    tags:['継続案件◎','月3〜30万','在宅完結','需要急増中'],
+    what:[
+      '企業や個人事業主のインスタ投稿を企画から作成まで担当',
+      '月◯本の投稿、ストーリーズ更新、リール作成が主な業務',
+      'クライアントとオンラインMTGで方向性すり合わせ'
+    ],
+    merit:[
+      '月額契約が基本で、収入が読める安定型',
+      'スマホ1台＋Canvaで始められる初期費用ゼロ',
+      '実績が積み上がれば1社→3社→5社で月30万も射程圏内'
+    ],
+    demerit:[
+      {pain:'最初の1社獲得まで時間がかかることがある', cure:'みさをも最初は知人の事業から月1万でスタート。誰でも越えるただの最初の壁です'},
+      {pain:'"バズらせなきゃ"のプレッシャーを感じやすい', cure:'契約は「バズ保証」じゃなく「運用代行」。投稿を続けることが価値だと知ればラクになります'},
+      {pain:'クライアントとのやり取りで疲れる日もある', cure:'最初に運用ルールを決めれば、毎日連絡しなくても回る形が作れます'}
+    ],
+    firstStep:'まず<strong>自分の練習用インスタを1個作って、Canvaで投稿を3枚作ってみる</strong>。今日できます。',
+    forSkills:['sns','design','trend','listen','steady']
+  },
+  canva: {
+    emoji:'🎨', name:'Canvaデザイン',
+    short:'無料ツール「Canva」で画像・バナーを作成',
+    desc:'チラシ・インスタ投稿・YouTubeサムネ・バナーをCanvaで作るお仕事。センスを活かして、初期費用ゼロで始められる定番の在宅ワーク。',
+    tags:['初期費用ゼロ','月3〜15万','スマホOK','センス活かせる'],
+    what:[
+      'Instagram投稿画像、YouTubeサムネ、バナー広告などを制作',
+      'クライアントの要望ヒアリング → ラフ → 提出',
+      '1案件500〜5,000円が相場、慣れると1日数本制作可能'
+    ],
+    merit:[
+      'Canva無料版でほぼ完結、初期費用ゼロ',
+      '単発案件が多く、副業初心者でもすぐ案件が取れる',
+      '「Canvaテンプレ販売」で寝てる間も売れる仕組みに育てられる'
+    ],
+    demerit:[
+      {pain:'単価が低めで、月10万超えるには本数をこなす必要', cure:'最初の3ヶ月で案件慣れ→4ヶ月目から単価交渉、で着実に上がります'},
+      {pain:'"Canvaなら誰でもできる"と思われがち', cure:'特定ジャンル（ママ系/教育系/飲食店）に絞れば一気に専門家ポジションが取れます'},
+      {pain:'差別化のためのデザイン勉強は必要', cure:'YouTubeで無料で学べる時代。みさをも独学で覚えました'}
+    ],
+    firstStep:'まず<strong>Canvaに登録して、自分のインスタ用の投稿を1枚作ってみる</strong>。10分で完了します。',
+    forSkills:['design','sns','steady','photo']
+  },
+  writing: {
+    emoji:'✍️', name:'Webライティング',
+    short:'ブログ・記事・商品説明の文章を書く',
+    desc:'企業サイトやブログ記事、商品説明、SNSキャプションなどを書くお仕事。在宅ワークの王道で、今日から始められる参入ハードルの低さが魅力。',
+    tags:['今すぐ始めやすい','月2〜20万','文章好きに◎','実績で高単価'],
+    what:[
+      '指定テーマの記事を3,000〜5,000字で執筆',
+      '文字単価0.5円〜（初心者）→ 1〜3円（中級）→ 5円〜（上級）',
+      'SEOライティング・セールスライティングで高単価へ'
+    ],
+    merit:[
+      '今日から始められる参入ハードルの低さ',
+      '文字単価が上がると時給5,000円超えも現実的',
+      '副業から始めて2〜3年で本業化する人が多数'
+    ],
+    demerit:[
+      {pain:'初心者の文字単価0.5円は時給500円以下になりがち', cure:'最初の3記事だけは「ポートフォリオ作成」と割り切れば、4記事目から1円以上を狙えます'},
+      {pain:'記事を量産するルーティンに飽きる人もいる', cure:'好きなジャンル（美容/育児/節約）を選べば、書きながら自分の知識も増える楽しさがあります'},
+      {pain:'AIライティングが普及して低単価案件は将来縮小', cure:'逆にAIを使って3倍速で書ける人になれば、単価そのままで時給アップできます'}
+    ],
+    firstStep:'まず<strong>「note」に自分のテーマで1記事書いてみる</strong>。これがそのまま実績になります。',
+    forSkills:['write','proof','steady']
+  },
+  snsScript: {
+    emoji:'📝', name:'SNS台本ライター',
+    short:'YouTube・TikTok・インスタの構成台本を書く',
+    desc:'YouTubeやTikTok、インスタリールの「冒頭→本編→締め」までの台本を書くお仕事。バズの設計者として、今最も需要が爆発している領域。',
+    tags:['新ジャンル','月5〜30万','需要急増','クリエイティブ'],
+    what:[
+      '発信者から方向性を聞き、1本5〜15分の動画台本を執筆',
+      '冒頭フック・本編構成・CTAまで設計',
+      '1本5,000〜30,000円、継続契約で月10〜30万円'
+    ],
+    merit:[
+      'YouTubeチャンネル運営の急増で需要が爆発中',
+      '動画編集者より単価が高く、特別なPCスキル不要',
+      '"バズる構成"が組めると引っ張りだこになる'
+    ],
+    demerit:[
+      {pain:'バズ型の構成知識を体系的に学ぶ必要がある', cure:'みさを公式LINEのプレゼントに「バズ台本のフレームワーク」を入れています'},
+      {pain:'発信者の世界観を読み取る感受性が要る', cure:'人の話を聞くのが好きな人ならすぐ身につきます。資質的にハマる人多いです'},
+      {pain:'結果が数字で出るので評価が厳しい', cure:'構成テンプレを使えば再現性が出るので、当たり外れが小さくなります'}
+    ],
+    firstStep:'まず<strong>自分が好きなYouTuberの動画1本を「冒頭・本編・締め」に分解してメモしてみる</strong>。これがすべての始まり。',
+    forSkills:['write','sns','video','trend','empathy']
+  },
+  video: {
+    emoji:'🎬', name:'動画編集',
+    short:'YouTube・ショート動画の編集',
+    desc:'YouTubeやTikTokの動画を編集するお仕事。需要が急増中で高単価、学習期間を乗り越えた先には安定した月20〜30万円が待っています。',
+    tags:['高単価◎','月5〜30万','需要急増中','CapCut無料'],
+    what:[
+      'カット編集・テロップ・効果音・サムネまで一括対応',
+      '長尺YouTube1本5,000〜20,000円、ショート1本500〜2,000円',
+      'CapCut（スマホ）/ Premiere Pro / DaVinci Resolveを使用'
+    ],
+    merit:[
+      '単価が高く、月10〜30万到達者が多い',
+      '一度学べばスキルが廃れにくい',
+      'YouTubeチャンネル運営や台本制作にも横展開できる'
+    ],
+    demerit:[
+      {pain:'習得に2〜3ヶ月の学習時間が必要', cure:'CapCutならスマホで完結、YouTubeに無料講座が腐るほどあります。最初の動画は1週間で作れます'},
+      {pain:'PCスペックがある程度必要', cure:'最初はCapCutでスマホ完結。本気で稼ぎ始めてから10万のPCを買えばOK'},
+      {pain:'長時間PCに向かう作業で目・肩が疲れる', cure:'1本3時間→慣れると1時間。自分の作業ペースが整えば疲労感は激減します'}
+    ],
+    firstStep:'まず<strong>CapCutをスマホに入れて、自分のショート動画を1本編集してみる</strong>。1日で完了します。',
+    forSkills:['video','steady','design']
+  },
+  aiAssist: {
+    emoji:'🤖', name:'AI業務代行',
+    short:'ChatGPTでメルマガ・SNS文章・データ整理を代行',
+    desc:'ChatGPT等のAIを駆使して、企業のメルマガ・SNS文章・議事録・データ整理を高速で代行。今、在宅ワークで最も伸びていて、最も競合が少ない領域。',
+    tags:['新領域','月5〜50万','AI必須','差別化しやすい'],
+    what:[
+      '企業のメルマガ・SNS投稿文をChatGPTで量産',
+      '議事録の文字起こし整形、リサーチ作業の自動化',
+      'AIプロンプト設計・業務フロー構築まで請け負う'
+    ],
+    merit:[
+      'AI使える人が圧倒的に少なく、競合が薄い',
+      'ChatGPT月20ドルで始められる超低コスト',
+      '時給換算で時給5,000〜10,000円も狙える'
+    ],
+    demerit:[
+      {pain:'プロンプト設計に最初の学習が必要', cure:'みさを公式LINEで「初心者向けプロンプト集」を配布中。コピペで使えます'},
+      {pain:'AIを使ってる事実だけだと差別化にならない', cure:'特定業務（メルマガ/議事録/SNS）に絞れば、すぐ専門家ポジションが取れます'},
+      {pain:'AI出力の最終チェック・調整スキルは必須', cure:'これは数こなせば身につきます。最初の10件で感覚は掴めます'}
+    ],
+    firstStep:'まず<strong>ChatGPT(無料版でOK)を開いて、自分の家事や仕事の悩みを1個相談してみる</strong>。AIの使い方の感覚はこれで掴めます。',
+    forSkills:['ai','data','write','org']
+  },
+  aiImage: {
+    emoji:'🖼️', name:'AI画像・サムネ生成',
+    short:'AIで画像・YouTubeサムネを作って販売',
+    desc:'Midjourney・DALL-E等で画像生成、YouTubeサムネやバナーを高速制作するお仕事。AI×デザインの新領域で、まだ競合が少ない狙い目。',
+    tags:['新領域','月3〜25万','AI必須','スピード勝負'],
+    what:[
+      'Midjourney/DALL-E等でクライアント要望の画像生成',
+      'YouTubeサムネを1日10〜20本量産',
+      'ストック画像販売、テンプレ販売で不労所得化も可能'
+    ],
+    merit:[
+      'AI×デザインで競合まだ少ない',
+      '従来のデザイナーより5〜10倍速で量産できる',
+      'サムネ1枚3,000〜10,000円、月20本で月10万円'
+    ],
+    demerit:[
+      {pain:'AI生成ツールの月額費用がかかる', cure:'最初は無料のCanva AIやBing Image Creatorで十分。稼ぎ始めてから有料版へ'},
+      {pain:'"プロンプトだけ書ける"では差別化できない', cure:'YouTubeサムネ・SNS用画像など"用途を絞る"だけで一気に専門家になれます'},
+      {pain:'商用利用の著作権ルール把握が必要', cure:'各ツールのルールはYouTubeで5分の解説動画見れば分かります'}
+    ],
+    firstStep:'まず<strong>Canva AIかBing Image Creatorで、自分の好きなテーマで画像を1枚生成してみる</strong>。無料・5分で完了。',
+    forSkills:['ai','design','photo']
+  }
+};
+
+const JOB_KEYS = Object.keys(JOBS);
+// 商品ファネル設計：ベストマッチは必ずここから選ぶ
+const PRIORITY_JOBS = ['aiAssist','aiImage','sns','snsScript'];
+
+// ===== スキル名マスタ =====
+const SKILL_LABELS = {
+  write:'文章を書く力', design:'デザインセンス', listen:'傾聴力', org:'段取り力',
+  sns:'SNS感度', video:'動画への興味', trend:'トレンド感度', steady:'継続力',
+  ai:'AI活用力', proof:'校正力', teach:'教える力', data:'数字・データ整理力',
+  photo:'写真センス', craft:'手作り力', lang:'語学力', empathy:'共感力'
+};
+
+// ===== MBTI 4タイプ =====
+const MBTI = {
+  EJ: {
+    code:'EJ', name:'信頼の番頭タイプ',
+    desc:'あなたは表面では落ち着いて見えながら、内側では人のことを真剣に考えている深い思いやりを持つタイプ。一度任された約束は最後までやり遂げる芯の強さがあり、周りからは「この人なら大丈夫」と無意識に頼られる存在です。実は自分でも気づいていない交渉力と巻き込み力を持っていて、本気を出した時の影響力は普通の人の何倍もあります。',
+    feat:[
+      {lbl:'強み',txt:'相手の期待を超えていく誠実さと、長期で信頼を積み上げる粘り強さ'},
+      {lbl:'本質',txt:'人とのつながりの中で本当の力を発揮するタイプ'},
+      {lbl:'隠れた才能',txt:'実は"場の温度"を上げる影響力がある'}
+    ],
+    bias:{sns:8, snsScript:5, aiAssist:3, aiImage:1}
+  },
+  EP: {
+    code:'EP', name:'ムードメーカータイプ',
+    desc:'あなたは場の空気を一瞬で明るくする独自のオーラを持っているタイプ。新しいものや流行に対して人より一歩早く"なんかいいかも"と感じ取るアンテナがあり、その直感は意外と当たります。一見明るく見えて、実は繊細に人の感情を読み取っていて、それがあなたの最大の武器。SNSや発信の世界で本領を発揮します。',
+    feat:[
+      {lbl:'強み',txt:'流行と人の感情を直感で掴む天性のセンス'},
+      {lbl:'本質',txt:'発信することで一気に伸びるタイプ'},
+      {lbl:'隠れた才能',txt:'みんなが気づく前のトレンドを先に感じ取れる'}
+    ],
+    bias:{sns:8, snsScript:6, aiImage:4, aiAssist:2}
+  },
+  IJ: {
+    code:'IJ', name:'在宅職人タイプ',
+    desc:'あなたは外では穏やかに見えながら、内側に深い集中力と完璧を求める職人気質を秘めているタイプ。一見おとなしく見えるけれど、本気で取り組んだ時の質は誰にも真似できないレベルになります。自分のペースで黙々と積み上げるのが得意で、その積み上げが3年後・5年後に他の人と圧倒的な差を生む、本物の力を持っています。',
+    feat:[
+      {lbl:'強み',txt:'集中力と継続力で品質を積み上げ続けられる'},
+      {lbl:'本質',txt:'静かに長期で勝ちにいくタイプ'},
+      {lbl:'隠れた才能',txt:'実は"指名される個人ブランド"を作れる'}
+    ],
+    bias:{aiAssist:7, snsScript:5, sns:4, aiImage:3}
+  },
+  IP: {
+    code:'IP', name:'クリエイタータイプ',
+    desc:'あなたは独自の世界観と発想力を持っているタイプ。普通の人が見過ごすものに価値を見出し、自分なりの形で表現できる感性が一番の武器です。集団行動より自分のペースを大切にしますが、それは弱さではなく強さ。自分の感性を信じて表現したものが、いつか必ず誰かの心を動かす力を持っています。',
+    feat:[
+      {lbl:'強み',txt:'独自の世界観と発想力、表現する才能'},
+      {lbl:'本質',txt:'作品で勝負して、ファンを作るタイプ'},
+      {lbl:'隠れた才能',txt:'"作品が一人歩きして売れる"仕組みを作れる'}
+    ],
+    bias:{aiImage:8, sns:5, aiAssist:4, snsScript:3}
+  }
+};
+
+// ===== ラベル変換マップ（スプシ送信用） =====
+const LABEL = {
+  q_age: {20:'20代', 30:'30代', 40:'40代', 50:'50代', 60:'60代以上'},
+  q_sex: {f:'女性', m:'男性', o:'その他'},
+  q_life: {full:'会社員', part:'パートタイム', home:'専業主婦・育児中', free:'フリーランス', none:'転職・休職中'},
+  q_dream: {travel:'家族で旅行', kids:'子供の教育費', free:'好きな時間に働く', skill:'スキルと自信', money:'毎月の不安をゼロに'},
+  q_time: {a:'1時間未満', b:'1〜2時間', c:'2〜4時間', d:'4時間以上', e:'子供の昼寝・就寝後'},
+  q_work: {a:'安定収入型', b:'成果報酬型', c:'副業3〜5万から', d:'半年以内に独立', e:'チームを持ちたい'},
+  q_pc: {a:'スマホのみ', b:'Word/Excel少し', c:'SNS・Googleドキュメント普通', d:'Canva・画像編集', e:'動画・デザイン'},
+  q_ai: {pro:'使いこなしている', use:'時々使う', want:'これから学びたい', know:'名前だけ', no:'使ってない'},
+  q_ei: {E:'外向(E)', I:'内向(I)'},
+  q_jp: {J:'計画(J)', P:'柔軟(P)'},
+  q_char: {care:'気配り上手', sense:'センス・おしゃれ', write:'文章・説明上手', steady:'コツコツ几帳面', video:'動画・映像好き', trend:'流行に敏感'},
+  q_hobby: {life:'丁寧な暮らし系', info:'読書・情報収集', make:'モノ作り', watch:'動画・映画', talk:'人と話す'}
+};
+const QUESTION_LABEL = {
+  q_age:'年代', q_sex:'性別', q_life:'生活スタイル', q_dream:'叶えたい夢',
+  q_time:'作業時間', q_work:'理想の働き方', q_pc:'PCスキル', q_ai:'AI関わり',
+  q_ei:'社交性', q_jp:'計画性', q_char:'性格', q_hobby:'趣味'
+};
+
+// ===== スコアリング =====
+const SCORE = {
+  q_pc: {
+    a:{aiAssist:2, sns:1},
+    b:{aiAssist:3, sns:2, snsScript:1},
+    c:{sns:4, aiAssist:3, snsScript:2, writing:2},
+    d:{canva:5, sns:3, aiImage:4},
+    e:{video:5, canva:3, aiImage:3}
+  },
+  q_time: {
+    a:{aiAssist:3, sns:2},
+    b:{sns:3, aiAssist:3, canva:2, snsScript:2},
+    c:{sns:4, aiAssist:3, snsScript:3, video:2},
+    d:{video:5, snsScript:4, aiAssist:4, sns:2},
+    e:{aiAssist:3, sns:3, canva:1}
+  },
+  q_work: {
+    a:{sns:5, aiAssist:3},
+    b:{video:3, sns:3, aiImage:3, snsScript:2},
+    c:{sns:3, writing:2, canva:2, aiAssist:2},
+    d:{video:4, snsScript:4, aiAssist:4, sns:2},
+    e:{sns:4, snsScript:3, aiAssist:3, video:1}
+  },
+  q_ai: {
+    pro:{aiAssist:10, aiImage:8, snsScript:3},
+    use:{aiAssist:6, aiImage:5, sns:2, snsScript:2},
+    want:{aiAssist:4, aiImage:3, sns:1},
+    know:{sns:1},
+    no:{sns:2, writing:1, canva:1}
+  },
+  q_char: {
+    care:{sns:3, snsScript:2},
+    sense:{aiImage:4, canva:3, sns:2},
+    write:{snsScript:4, writing:3, aiAssist:2},
+    steady:{aiAssist:3, writing:2, sns:1, video:2},
+    video:{video:4, snsScript:3, aiImage:1},
+    trend:{sns:4, snsScript:3, aiImage:2, aiAssist:1}
+  },
+  q_hobby: {
+    life:{sns:3, canva:2, aiImage:1},
+    info:{aiAssist:4, writing:2, snsScript:1},
+    make:{aiImage:4, canva:3, video:1},
+    watch:{video:3, snsScript:3, sns:1},
+    talk:{sns:3, snsScript:2}
+  },
+  q_dream: {
+    travel:{sns:2, aiAssist:2},
+    kids:{sns:3, aiAssist:2},
+    free:{aiAssist:3, snsScript:2, video:2},
+    skill:{snsScript:3, aiAssist:3},
+    money:{sns:3, aiAssist:2}
+  }
+};
+
+const SKILL_TO_JOB = {
+  write:{snsScript:3, writing:3, aiAssist:1},
+  design:{aiImage:4, canva:3, video:1},
+  listen:{sns:3, snsScript:1},
+  org:{aiAssist:3},
+  sns:{sns:4, snsScript:2},
+  video:{video:3, snsScript:2},
+  trend:{sns:3, snsScript:2, aiImage:2},
+  steady:{writing:2, video:2, aiAssist:2, sns:1},
+  ai:{aiAssist:5, aiImage:4},
+  proof:{writing:2, aiAssist:2},
+  teach:{snsScript:2, sns:2, aiAssist:1},
+  data:{aiAssist:4},
+  photo:{canva:3, aiImage:2, sns:1},
+  craft:{canva:2, aiImage:1},
+  lang:{writing:2, aiAssist:1},
+  empathy:{sns:3, snsScript:2}
+};
+
+// ===== ユーティリティ =====
+function getRadioVal(name){
+  const el = document.querySelector(`input[name="${name}"]:checked`);
+  return el ? el.value : null;
+}
+function getCheckboxVals(name){
+  return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(e => e.value);
+}
+
+function calcMBTI(){
+  const ei = getRadioVal('q_ei') || 'I';
+  const jp = getRadioVal('q_jp') || 'J';
+  return ei + jp;
+}
+
+function calcSkillRanking(){
+  const skills = getCheckboxVals('q_skills');
+  const scored = skills.map(s => {
+    const map = SKILL_TO_JOB[s] || {};
+    const weight = Object.values(map).reduce((a,b)=>a+b,0);
+    return {key:s, label:SKILL_LABELS[s]||s, weight};
+  });
+  scored.sort((a,b) => b.weight - a.weight);
+  const max = scored.length ? Math.max(...scored.map(x=>x.weight), 1) : 1;
+  return scored.map(x => ({...x, pct: Math.max(35, Math.round((x.weight / max) * 100))}));
+}
+
+function calcJobRanking(){
+  const sc = {};
+  JOB_KEYS.forEach(k => sc[k] = 0);
+
+  const skills = getCheckboxVals('q_skills');
+  skills.forEach(sk => {
+    const map = SKILL_TO_JOB[sk] || {};
+    Object.entries(map).forEach(([j,p]) => sc[j] += p);
+  });
+
+  ['q_pc','q_time','q_work','q_ai','q_char','q_hobby','q_dream'].forEach(q => {
+    const v = getRadioVal(q);
+    if(!v) return;
+    const map = (SCORE[q] && SCORE[q][v]) || {};
+    Object.entries(map).forEach(([j,p]) => sc[j] += p);
+  });
+
+  const m = calcMBTI();
+  const bias = (MBTI[m] && MBTI[m].bias) || {};
+  Object.entries(bias).forEach(([j,p]) => sc[j] += p);
+
+  return Object.entries(sc).sort((a,b) => b[1] - a[1]);
+}
+
+// ベストマッチ：必ず PRIORITY_JOBS の中から、最高スコアを選ぶ
+function pickBestMatch(ranked){
+  for(const [k] of ranked){
+    if(PRIORITY_JOBS.includes(k)) return k;
+  }
+  return ranked[0][0];
+}
+
+// 2-3位：top以外の上位から（優先・非優先混ぜる）
+function pickSubMatches(ranked, top){
+  const out = [];
+  for(const [k] of ranked){
+    if(out.length >= 2) break;
+    if(k === top) continue;
+    out.push(k);
+  }
+  return out;
+}
+
+// ===== 表示 =====
+function showResult(){
+  if(!allOk('page4')) return;
+
+  const ranked = calcJobRanking();
+  const top = pickBestMatch(ranked);
+  const [s1, s2] = pickSubMatches(ranked, top);
+  const mbti = calcMBTI();
+  const skills = calcSkillRanking();
+  const answers = collectAnswers();
+
+  const snapshot = {
+    answers, mbti, top, s1, s2, skills,
+    ts: Date.now(),
+    ranked: ranked.slice(0,5)
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+
+  sendWebhook(snapshot);
+  renderResult(snapshot);
+}
+
+// スプシ送信：すべて日本語ラベルに変換してから送信
+function sendWebhook(snap){
+  if(!WEBHOOK_URL) return;
+  const a = snap.answers || {};
+  const m = MBTI[snap.mbti] || {};
+  const skillLabels = (snap.skills||[]).map(s => SKILL_LABELS[s.key] || s.key);
+
+  const payload = {
+    ts: snap.ts,
+    ts_iso: new Date(snap.ts).toISOString(),
+    mbti: snap.mbti + ' - ' + (m.name || ''),
+    top: (JOBS[snap.top]||{}).name || snap.top,
+    s1: (JOBS[snap.s1]||{}).name || snap.s1,
+    s2: (JOBS[snap.s2]||{}).name || snap.s2,
+    answers: {
+      q_age: (LABEL.q_age||{})[a.q_age] || a.q_age,
+      q_sex: (LABEL.q_sex||{})[a.q_sex] || a.q_sex,
+      q_life: (LABEL.q_life||{})[a.q_life] || a.q_life,
+      q_dream: (LABEL.q_dream||{})[a.q_dream] || a.q_dream,
+      q_time: (LABEL.q_time||{})[a.q_time] || a.q_time,
+      q_work: (LABEL.q_work||{})[a.q_work] || a.q_work,
+      q_pc: (LABEL.q_pc||{})[a.q_pc] || a.q_pc,
+      q_ai: (LABEL.q_ai||{})[a.q_ai] || a.q_ai,
+      q_char: (LABEL.q_char||{})[a.q_char] || a.q_char,
+      q_hobby: (LABEL.q_hobby||{})[a.q_hobby] || a.q_hobby,
+      q_ei: (LABEL.q_ei||{})[a.q_ei] || a.q_ei,
+      q_jp: (LABEL.q_jp||{})[a.q_jp] || a.q_jp
+    },
+    skill_count: (snap.skills||[]).length,
+    skills: skillLabels,
+    ua: navigator.userAgent
+  };
+
+  try {
+    fetch(WEBHOOK_URL, {
+      method:'POST',
+      mode:'no-cors',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify(payload)
+    }).catch(e => console.warn('webhook fail:', e));
+  } catch(e){ console.warn('webhook error:', e); }
+}
+
+function renderResult(snap){
+  const {top, s1, s2, mbti, skills, answers} = snap;
+
+  // Profile chips
+  const ageMap = LABEL.q_age, sexMap = LABEL.q_sex, lifeMap = LABEL.q_life, aiMap = LABEL.q_ai;
+  document.getElementById('r-chips').innerHTML = [
+    ageMap[answers.q_age], sexMap[answers.q_sex], lifeMap[answers.q_life], aiMap[answers.q_ai]
+  ].filter(Boolean).map(t => `<span class="pchip">${t}</span>`).join('');
+
+  // 回答サマリー
+  const summaryRows = ['q_age','q_sex','q_life','q_dream','q_time','q_work','q_pc','q_ai','q_char','q_hobby','q_ei','q_jp']
+    .map(k => {
+      const v = answers[k];
+      const display = (LABEL[k]||{})[v] || v || '—';
+      return `<div class="answer-row"><div class="answer-q">${QUESTION_LABEL[k]}</div><div class="answer-a">${display}</div></div>`;
+    }).join('');
+  // スキル一覧の行
+  const skillChips = skills.length
+    ? `<div class="answer-a multi">${skills.map(s => `<span class="achip">${s.label}</span>`).join('')}</div>`
+    : `<div class="answer-a">—</div>`;
+  const skillRow = `<div class="answer-row"><div class="answer-q">強み (${skills.length}個)</div>${skillChips}</div>`;
+  document.getElementById('r-answers').innerHTML = summaryRows + skillRow;
+
+  // MBTI
+  const m = MBTI[mbti] || MBTI.IJ;
+  document.getElementById('m-code').textContent = m.code + '型';
+  document.getElementById('m-name').textContent = m.name;
+  document.getElementById('m-desc').textContent = m.desc;
+  document.getElementById('m-feat').innerHTML = m.feat.map(f => `<div class="row"><div class="lbl">${f.lbl}</div><div>${f.txt}</div></div>`).join('');
+
+  // Skill ranking
+  if(skills.length === 0){
+    document.getElementById('r-skills').innerHTML = '<div style="font-size:12px;color:var(--tl);text-align:center;padding:8px">スキル未選択</div>';
+  } else {
+    document.getElementById('r-skills').innerHTML = skills.map((s,i) => {
+      return `<div class="skill-row">
+        <div class="skill-rank ${i<3?'top':''}">${i+1}</div>
+        <div class="skill-name">${s.label}</div>
+        <div class="skill-bar"><div class="skill-bar-f" style="width:${s.pct}%"></div></div>
+      </div>`;
+    }).join('');
+  }
+
+  // Best match
+  const mj = JOBS[top];
+  document.getElementById('r-title').textContent = `あなたのベストマッチは「${mj.name}」`;
+  document.getElementById('r-sub').textContent = `${m.name}・スキル${skills.length}個を分析した結果`;
+  document.getElementById('r-emoji').textContent = mj.emoji;
+  document.getElementById('r-name').textContent = mj.name;
+  document.getElementById('r-desc').textContent = mj.desc;
+  document.getElementById('r-tags').innerHTML = mj.tags.map(t => `<span class="tag">${t}</span>`).join('');
+  document.getElementById('r-what').innerHTML = mj.what.map(t => `<div class="job-li"><span class="ico">▸</span><span>${t}</span></div>`).join('');
+  document.getElementById('r-merit').innerHTML = mj.merit.map(t => `<div class="job-li merit"><span class="ico">○</span><span>${t}</span></div>`).join('');
+  document.getElementById('r-demerit').innerHTML = mj.demerit.map(d => `
+    <div class="job-li demerit"><span class="ico">△</span><span><strong>${d.pain}</strong><br><span style="color:var(--tm);font-size:11px;line-height:1.6">→ ${d.cure}</span></span></div>
+  `).join('');
+  document.getElementById('r-route').innerHTML = mj.firstStep;
+
+  // あわせて
+  document.getElementById('r-subs').innerHTML = [s1,s2].filter(Boolean).map((k,i) => {
+    const j = JOBS[k];
+    return `<div class="rcs">
+      <div class="se">${j.emoji}</div>
+      <div>
+        <div class="sk">${i===0?'2nd MATCH':'3rd MATCH'}</div>
+        <div class="sn2">${j.name}</div>
+        <div class="sd">${j.short}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Joblib (全職種展開)
+  document.getElementById('r-joblib').innerHTML = JOB_KEYS.map(k => {
+    const j = JOBS[k];
+    const isTop = k === top;
+    return `<details ${isTop?'open':''}>
+      <summary><span class="libe">${j.emoji}</span><span>${j.name}</span>${isTop?'<span class="libtag">あなたのBEST</span>':''}</summary>
+      <div class="libbody">
+        <p>${j.desc}</p>
+        <div class="lbl">📌 仕事内容</div>
+        ${j.what.map(t => `<div class="job-li"><span class="ico">▸</span><span>${t}</span></div>`).join('')}
+        <div class="lbl" style="color:var(--ok)">○ メリット</div>
+        ${j.merit.map(t => `<div class="job-li merit"><span class="ico">○</span><span>${t}</span></div>`).join('')}
+        <div class="lbl" style="color:var(--ng)">△ 注意点（→克服法）</div>
+        ${j.demerit.map(d => `<div class="job-li demerit"><span class="ico">△</span><span><strong>${d.pain}</strong><br><span style="color:var(--tm);font-size:11px;line-height:1.6">→ ${d.cure}</span></span></div>`).join('')}
+        <div class="lbl">🎯 まず最初の1ステップ</div>
+        <div class="route-box" style="margin-top:6px">${j.firstStep}</div>
+      </div>
+    </details>`;
+  }).join('');
+
+  document.getElementById('cta-link').href = LINE_URL;
+
+  showPage('result');
+}
+
+function collectAnswers(){
+  const single = ['q_age','q_sex','q_life','q_dream','q_time','q_work','q_pc','q_ai','q_ei','q_jp','q_char','q_hobby'];
+  const a = {};
+  single.forEach(k => a[k] = getRadioVal(k));
+  a.q_skills = getCheckboxVals('q_skills');
+  return a;
+}
+
+function showPage(id){
+  document.querySelectorAll('.pw2').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function goNext(from, to){ if(!allOk(from)) return; showPage(to); }
+
+function allOk(pid){
+  const page = document.getElementById(pid);
+  for(const g of page.querySelectorAll('[data-q]')){
+    const isMulti = g.dataset.multi === '1';
+    if(isMulti){
+      if(g.querySelectorAll('input:checked').length === 0) return false;
+    } else {
+      if(!document.querySelector(`input[name="${g.dataset.q}"]:checked`)) return false;
+    }
+  }
+  return true;
+}
+
+// スキル選択カウンター更新
+function updateSkillCounter(){
+  const el = document.getElementById('skill-counter');
+  if(!el) return;
+  const n = document.querySelectorAll('input[name="q_skills"]:checked').length;
+  let msg = `現在 <strong>${n}</strong> 個選択中`;
+  if(n < 6) msg += '（あと' + (6-n) + '個で精度UP）';
+  else msg += ' ✨ いい感じ！';
+  el.innerHTML = msg;
+  el.style.color = n >= 6 ? 'var(--ok)' : 'var(--pd)';
+  el.style.background = n >= 6 ? '#eaf5ec' : 'var(--pp)';
+}
+
+document.querySelectorAll('.opt').forEach(lbl => {
+  lbl.addEventListener('click', e => {
+    const inp = lbl.querySelector('input');
+    const isCheckbox = inp.type === 'checkbox';
+    if(isCheckbox){
+      inp.checked = !inp.checked;
+      lbl.classList.toggle('sel', inp.checked);
+      e.preventDefault();
+      if(inp.name === 'q_skills') updateSkillCounter();
+    } else {
+      document.querySelectorAll(`input[name="${inp.name}"]`).forEach(r => r.closest('.opt').classList.remove('sel'));
+      lbl.classList.add('sel'); inp.checked = true;
+    }
+    ['page1','page2','page3','page4'].forEach((pid, i) => {
+      const bid = ['next1','next2','next3','next4'][i];
+      const el = document.getElementById(pid);
+      if(el && el.classList.contains('active')) document.getElementById(bid).disabled = !allOk(pid);
+    });
+  });
+});
+
+// ===== 起動: ロックチェック =====
+(function init(){
+  updateSkillCounter();
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if(saved){
+    try {
+      const snap = JSON.parse(saved);
+      renderResult(snap);
+      document.getElementById('start').classList.remove('active');
+      document.getElementById('result').classList.add('active');
+    } catch(e){
+      console.warn('保存結果の復元に失敗:', e);
+    }
+  }
+})();
+</script>
+</body>
+</html>
