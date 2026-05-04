@@ -1060,7 +1060,8 @@ function renderResult(snap){
     </details>`;
   }).join('');
 
-  document.getElementById('cta-link').href = LINE_URL;
+  const ctaEl = document.getElementById('cta-link');
+  if(ctaEl) ctaEl.href = LINE_URL;
 
   showPage('result');
 }
